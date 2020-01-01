@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dependency Size Analyzer</title>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <div id="visualization" style="width: 100vw; height: 100vh"></div>
+    <script type="text/json" id="data"><%- data %></script>
+    <script src="https://get.carrotsearch.com/foamtree/latest/carrotsearch.foamtree.js"></script>
+    <script type="text/javascript">
+const BYTE_UNITS = ['B','kB','MB','GB','TB','PB','EB','ZB','YB'];
+
+function prettyByte(number) {
+  const isNegative = number < 0;
+  const prefix = isNegative ? '-' : '';
+
+  if (isNegative) {
+    number = -number;
+  }
+
+  if (number < 1) {
+    return prefix + number + ' ' + BYTE_UNITS[0];
+  }
+
+  const exponent = Math.min(Math.floor(Math.log10(number) / 3), BYTE_UNITS.length - 1);
+  number = Number((number / Math.pow(1000, exponent)).toPrecision(3));
+
+  const unit = BYTE_UNITS[exponent];
+
+  return prefix + number + ' ' + unit;
+}
+const json = JSON.parse(document.getElementById('data').textContent.trim());
+console.log(json);
+window.addEventListener('load', function () {
+  const foamtree = new CarrotSearchFoamTree({
+    id: 'visualization',
+    layout: 'squarified',
+    stacking: 'flattened',
+    pixelRatio: window.devicePixelRatio || 1,
+    maxGroups: Infinity,
+    maxGroupLevelsDrawn: Infinity,
+    maxGroupLabelLevelsDrawn: Infinity,
+    maxGroupLevelsAttached: Infinity,
+    groupMinDiameter: 0,
+    groupLabelVerticalPadding: 0.2,
+    rolloutDuration: 0,
+    pullbackDuration: 0,
+    fadeDuration: 0,
+    groupExposureZoomMargin: 0.2,
+    zoomMouseWheelDuration: 300,
+    openCloseDuration: 200,
+    titleBarDecorator(opts, props, vars) {
+      if (typeof props.group.weight !== 'undefined') {
+        vars.titleBarShown = true;
+        vars.titleBarText = `${props.group.label} is ${prettyByte(props.group.weight)}`;
+      } else {
+        vars.titleBarShown = false;
+      }
+    },
+    dataObject: { groups: json }
+  });
+});
+    </script>
+  </body>
+</html>

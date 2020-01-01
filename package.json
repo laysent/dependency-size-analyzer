@@ -1,0 +1,34 @@
+{
+  "name": "dependency-size-analyzer",
+  "version": "0.1.0",
+  "description": "analyze size of dependencies used in npm project and/or electron app",
+  "main": "./main.js",
+  "bin": {
+    "analyze-dep": "./bin.js"
+  },
+  "scripts": {
+    "start": "node ./bin.js"
+  },
+  "keywords": [
+    "dependency size",
+    "analyzer",
+    "node_modules",
+    "visualization"
+  ],
+  "author": "LaySent <laysent@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@yarnpkg/lockfile": "^1.1.0",
+    "cacache": "^13.0.1",
+    "ejs": "^3.0.1",
+    "generic-pool": "^3.7.1",
+    "glob": "^7.1.6",
+    "libnpmconfig": "^1.2.1",
+    "npm-packlist": "^2.0.3",
+    "opener": "^1.5.1",
+    "pacote": "^10.3.0",
+    "rimraf": "^3.0.0",
+    "tar": "^5.0.5",
+    "yargs": "^15.0.2"
+  }
+}
